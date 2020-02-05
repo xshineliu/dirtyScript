@@ -19,6 +19,26 @@ fi
 
 #######################################
 
+IFS=. read ip1 ip2 ip3 ip4 <<< "$1"
+#echo $ip1 $ip2 $ip3 $ip4
+path=$(printf "/var/run/topinfo/%03d_%03d_%03d_000/%03d_%03d_%03d_%03d.log" $ip1 $ip2 $ip3 $ip1 $ip2 $ip3 $ip4)
+
+if [ -e $path ]; then
+	echo -ne $1"\t"$(stat $path | grep Mod | awk '{print $2, $3}' | cut -b -19)" "
+else
+	echo -ne $1"\tNA "
+fi
+
+grep qemu $path > /dev/null
+
+if [ $? -eq 0 ]; then
+	echo " QEMU"
+else
+	echo " ----"
+fi
+
+#######################################
+
 
 while [ 1 -gt 0 ]; do
 	val=$(expr $(hwclock --debug -r -u --noadjfile | grep "seconds since 1969" | awk '{print $8}') - $(date +%s))
