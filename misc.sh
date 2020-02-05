@@ -2,6 +2,8 @@ find /var/run/sensorlog/ -name "*.log" -mmin +60 -mmin -1500 | xargs ls -ltr | a
 
 for i in `cat /root/333.txt`; do echo -ne $i" "; w3m -dump  http://10.1.1.1/info/lastdown.php?srv=$i; done | grep 10 | awk '{print $1, $2, $3, $5, $6}'
 
+for i in $(find /var/run/topinfo/ -name "*.log" -mmin +60 -mmin -43260 | sort -n); do echo -ne $i" "; grep qemu $i > /dev/null; if [ $? -eq 0 ]; then echo -ne "IAAS "; else  echo -ne "---- "; fi; echo $(stat $i | grep Mod | awk '{print $2, $3}' | cut -b -19); done
+
 ########################################
 
 IFS=. read ip1 ip2 ip3 ip4 <<< "$1"
