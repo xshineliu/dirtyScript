@@ -2,6 +2,18 @@ find /var/run/sensorlog/ -name "*.log" -mmin +60 -mmin -1500 | xargs ls -ltr | a
 
 for i in `cat /root/333.txt`; do echo -ne $i" "; w3m -dump  http://10.1.1.1/info/lastdown.php?srv=$i; done | grep 10 | awk '{print $1, $2, $3, $5, $6}'
 
+########################################
+
+IFS=. read ip1 ip2 ip3 ip4 <<< "$1"
+#echo $ip1 $ip2 $ip3 $ip4
+path=$(printf "/var/run/sensorlog/%03d_%03d_%03d_000/%03d_%03d_%03d_%03d.log" $ip1 $ip2 $ip3 $ip1 $ip2 $ip3 $ip4)
+
+if [ -e $path ]; then
+	stat $path | grep Mod | awk '{print $2, $3}' | cut -b -19
+else
+	echo "NA"
+fi
+
 #######################################
 
 
