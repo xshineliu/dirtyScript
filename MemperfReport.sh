@@ -140,11 +140,11 @@ echo 1000 > /proc/$$/oom_score_adj
 
 for ((i=0; i<${NSOCKETS}; i++)); do
 	if [ ${MEM_AVL[$i]} -lt $PGS ]; then
-		echo "numactl -N${i} -m${i} $EXE -n $N -r $R ### $(date +%Y%m%d_%H%M%S) ### ${JUNO_VERSION}" | tee /dev/stderr |  $NC_EXE -q 0 $DEST_SRV $DEST_PORT
+		echo "numactl -N${i} -m${i} $EXE -n $N -r $R ### $(date +%Y%m%d_%H%M%S) ### ${TOOLKIT}" | tee /dev/stderr |  $NC_EXE -q 0 $DEST_SRV $DEST_PORT
 		echo "Memory insufficient on node ${i}, estimated free as ${MEM_AVL[$i]} pages, while need $PGS pages" | tee /dev/stderr |  $NC_EXE -q 0 $DEST_SRV $DEST_PORT
 		continue;
 	fi
-    echo "numactl -N${i} -m${i} $EXE -n $N -r $R ### $(date +%Y%m%d_%H%M%S) ### ${JUNO_VERSION}" | tee /dev/stderr |  $NC_EXE -q 0 $DEST_SRV $DEST_PORT
+    echo "numactl -N${i} -m${i} $EXE -n $N -r $R ### $(date +%Y%m%d_%H%M%S) ### ${TOOLKIT}" | tee /dev/stderr |  $NC_EXE -q 0 $DEST_SRV $DEST_PORT
     numactl -N${i} -m${i} $EXE -n $N -r $R | tee /dev/stderr |  $NC_EXE -q 0 $DEST_SRV $DEST_PORT
     sleep 1
 done
